@@ -26,6 +26,7 @@ def get_same_or_newer(start_date):
     data = file.readlines()
     file.close()
     reader = csv.reader(data[1:])
+    reader.sort(key = row[3])
 
     # We want all employees that started at the same date or the closest newer
     # date. To calculate that, we go through all the data and find the
