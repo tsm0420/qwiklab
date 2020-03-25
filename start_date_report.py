@@ -21,7 +21,7 @@ def get_start_date():
 
 def get_same_or_newer(start_date):
     """Returns the employees that started on the given date, or the closest one."""
-    file = open('employees-with-date.csv','+')
+    file = open('employees-with-date.csv','w+')
     file.write(requests.get(FILE_URL, stream=True).content.decode("UTF-8"))
     data = file.readlines()
     file.close()
