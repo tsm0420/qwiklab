@@ -19,21 +19,12 @@ def get_start_date():
 
     return datetime.datetime(year, month, day)
 
-def get_file_lines(url):
-    """Returns the lines contained in the file at the given URL"""
-
-    # Download the file over the internet
-    response = requests.get(url, stream=True)
-
-    # Decode all lines into strings
-    lines = []
-    for line in response.iter_lines():
-        lines.append(line.decode("UTF-8"))
-    return lines
-
 def get_same_or_newer(start_date):
     """Returns the employees that started on the given date, or the closest one."""
-    data = get_file_lines(FILE_URL)
+    file = open('employees-with-date.csv','+')
+    file.write(requests.get(FILE_URL, stream=True).content.decode("UTF-8"))
+    data = file.readlines()
+    file.close()
     reader = csv.reader(data[1:])
 
     # We want all employees that started at the same date or the closest newer
@@ -42,7 +33,7 @@ def get_same_or_newer(start_date):
     # the given start date.
     min_date = datetime.datetime.today()
     min_date_employees = []
-    for row in reader: 
+    for row in reader:
         row_date = datetime.datetime.strptime(row[3], '%Y-%m-%d')
 
         # If this date is smaller than the one we're looking for,
